@@ -1,15 +1,20 @@
+const {
+  getAllPosts,
+  getSinglePost,
+  createPost,
+  updatePost,
+  deletePost,
+} = require('../controllers/postController');
+const authorizeUser = require('../middlewares/authMiddleware.js');
 
-const { getAllPosts,getSinglePost,createPost,updatePost,deletePost} = require('../controllers/postController')
+const express = require('express');
 
-const express = require('express')
+const router = express.Router();
 
-const router = express.Router()
+router.get('/', getAllPosts);
+router.post('/', authorizeUser, createPost);
+router.get('/:id', authorizeUser, getSinglePost);
+router.patch('/:id', authorizeUser, updatePost);
+router.delete('/:id', authorizeUser, deletePost);
 
-router.get('/',getAllPosts)
-router.post('/', createPost)
-router.get('/:id', getSinglePost)
-router.patch('/:id', updatePost)
-router.delete('/:id', deletePost)
-
-
-module.exports = router
+module.exports = router;
