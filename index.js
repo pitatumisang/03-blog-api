@@ -1,16 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const connectDB = require('./src/configs/db.js');
 
 require('dotenv').config();
 require('express-async-errors');
 
-const errorHandler = require('./middlewares/errorHandlerMiddleware.js');
+const errorHandler = require('./src/middlewares/errorHandlerMiddleware.js');
 
 // Console colors package
 require('colors');
 
-const userRoutes = require('./routes/userRoutes.js');
-const postRoutes = require('./routes/postRoutes');
+const userRoutes = require('./src/routes/userRoutes.js');
+const postRoutes = require('./src/routes/postRoutes');
 
 const app = express();
 
@@ -33,14 +34,9 @@ app.use('*', (req, res) => {
 app.use(errorHandler);
 
 // Connect DB method
-const connectDB = async () => {
-  await mongoose.connect(process.env.MONGO_URI);
-};
-
 connectDB()
   .then(() => {
     console.log('DB Connected successfully!'.yellow.bold.underline);
-
     // starting the server when db connection is successful
     app.listen(PORT, () => {
       console.log(`Server running on port: ${PORT}...`.cyan.bold.underline);

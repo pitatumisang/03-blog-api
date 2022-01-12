@@ -17,11 +17,12 @@ const getAllPosts = async (req, res) => {
 
 //* @DESC    Create post
 //* @ROUTE   POST /api/v1/posts
-//* @ACCESS  PUBLIC
+//* @ACCESS  PRIVATE
 const createPost = async (req, res) => {
   const { title, desc } = req.body;
+  const { userId } = req.user;
 
-  const post = await Post.create({ title, desc });
+  const post = await Post.create({ createdBy: userId, title, desc });
 
   res.status(StatusCodes.CREATED).json({
     success: true,
@@ -32,7 +33,7 @@ const createPost = async (req, res) => {
 
 //* @DESC    Get a single post
 //* @ROUTE   GET /api/v1/posts
-//* @ACCESS  PUBLIC
+//* @ACCESS  PRIVATE
 const getSinglePost = async (req, res) => {
   const { id } = req.params;
 
@@ -50,13 +51,14 @@ const getSinglePost = async (req, res) => {
 
 //* @DESC    Update post
 //* @ROUTE   PATCH /api/v1/posts
-//* @ACCESS  PUBLIC
+//* @ACCESS  PRIVATE
 const updatePost = async (req, res) => {
   const { id } = req.params;
   const { title, desc } = req.body;
+  const { userId } = req.user;
 
-  const post = await Post.findByIdAndUpdate(
-    { _id: id },
+  const post = await Post.findOneAndUpdate(
+    { _id: id, createdBy: userId },
     { title, desc },
     { new: true }
   );
@@ -74,11 +76,12 @@ const updatePost = async (req, res) => {
 
 //* @DESC    Delete post
 //* @ROUTE   DELETE /api/v1/posts
-//* @ACCESS  PUBLIC
+//* @ACCESS  PRIVATE
 const deletePost = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req.user;
 
-  const post = await Post.findByIdAndRemove({ _id: id });
+  const post = await Post.findOneAndRemove({ _id: id, createdBy: userId });
 
   if (!post) {
     throw new CustomError('Post deletion failed', StatusCodes.NOT_FOUND);
