@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const connectDB = require('./src/configs/db.js');
 
 require('dotenv').config();
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 3000;
 
 // General Middlewares
 app.use(express.json());
+app.use(cors({ origin: '*' }));
 
 // Routes
 app.use('/api/v1/user', userRoutes);
