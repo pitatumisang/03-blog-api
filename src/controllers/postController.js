@@ -9,6 +9,7 @@ const getAllPosts = async (req, res) => {
   const posts = await Post.find({}).sort({ createdAt: -1 });
 
   res.status(StatusCodes.OK).json({
+    user: req.user,
     success: true,
     count: posts.length,
     posts,

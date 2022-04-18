@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const connectDB = require('./src/configs/db.js');
+const { StatusCodes } = require('http-status-codes');
 
 require('dotenv').config();
 require('express-async-errors');
@@ -16,7 +17,7 @@ const postRoutes = require('./src/routes/postRoutes');
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // General Middlewares
 app.use(express.json());
@@ -45,5 +46,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.log(err);
+    console.log(`${err}`.red.bold.underline);
   });
