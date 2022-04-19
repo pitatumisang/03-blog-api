@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.name === 'CastError') {
-    message = `Todo with id: ${err.value} not found`;
+    message = `Post with id: ${err.value} not found`;
     statusCode = StatusCodes.NOT_FOUND;
   }
 
